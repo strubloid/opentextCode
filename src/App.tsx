@@ -43,8 +43,8 @@ function App() {
   };
 
   /**
-   * 
-   * @returns Function to build pagination info text, so every time the user will change the page, it will be updated.
+   * Function to build pagination info text, so every time the user will change the page, it will be updated.
+   * @returns a string that describes the current pagination state.
    */
   const getPaginationInfo = (): string => {
     const start = startIndex + 1;
