@@ -1,0 +1,41 @@
+/* using this for the root basic configuration */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* table  */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "Segoe UI", sans-serif;
+  color: #2c2f36;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+thead {
+  color: #fff;;
+}
+
+/* Even rows */
+tr:nth-child(even) {
+  background-color: #f7f7f8;
+}
+
+/* Odd rows */
+tr:nth-child(odd) {
+  background-color: #e5e5e9;
+}
+
+/* Hover effect */
+tr:hover {
+  background-color: #5780b3;
+  color: white;
+  cursor: pointer;
+}
