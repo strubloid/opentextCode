@@ -1,9 +1,17 @@
 /* using this for the root basic configuration */
 #root {
   max-width: 1280px;
-  margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  flex: 1 auto;
+}
+
+#content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: stretch;
+  justify-content: center;
 }
 
 /* table  */

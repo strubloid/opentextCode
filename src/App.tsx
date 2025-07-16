@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import "./App.css";
-
-type Employee = {
-  id: number,
-  employee_name: string,
-  age: number,
-  salary: number,
-  job_title: string
-}
+import { Employee } from "./Employee";
 
 function App() {
 
   const ApiURL = "https://employeesapp.azurewebsites.net/api/GetEmployees";
-  let employeesData: Employee[] = []; // here will contain all the data from the axios get request
-  let [EmployeeWithequiredAge, setEmployeeWithequiredAge] = useState<Employee[]>([]); // here will be the data filtered by the age > 30
 
-  // This function is responsible for the loading of the data that came from the employeesApp
+  // here will contain all the data from the axios get request
+  let employeesData: Employee[] = []; 
+
+  // here will be the data filtered by the age > 30
+  let [EmployeeWithequiredAge, setEmployeeWithequiredAge] = useState<Employee[]>([]); 
+
+  /**
+   * LoadServerData is an asynchronous function that fetches employee data from a remote API.
+   * It uses axios to make a GET request to the specified API URL.
+   * If the response contains valid employee data, it filters the employees to include only those older
+   * than 30 years and updates the state with this filtered list.
+   */
   const LoadServerData = async () => {
     
     // loading all usersData
@@ -26,13 +28,9 @@ function App() {
       responseType: "json",
     });
 
-    // Basic making sure that the response Data JsonObject contain data to iterate
+    // This will check if exist responseData with basic validation, and will be doing the filtering by the age > 30
     if (responseData != null && responseData.data != null && responseData.data.employees != null){
-        
-      // getting the correct place that contain data from the employees
       employeesData = responseData.data.employees;
-      
-      // This should be only loaded if age is bigger than 30
       setEmployeeWithequiredAge(employeesData.filter( person => person.age > 30))
     }
     
@@ -40,10 +38,7 @@ function App() {
 
   // Starting the application with the load of data
   useEffect(() => {
-    
     LoadServerData(); 
-    console.log("loadedd")
-
   }, []);
 
   return (
