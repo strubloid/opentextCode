@@ -13,6 +13,46 @@ function App() {
   // here will be the data filtered by the age > 30
   let [EmployeeWithequiredAge, setEmployeeWithequiredAge] = useState<Employee[]>([]); 
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(5);
+
+  // Pagination variables
+  const totalPages = Math.ceil(EmployeeWithequiredAge.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentEmployees = EmployeeWithequiredAge.slice(startIndex, endIndex);
+
+  // Pagination for the next page
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Pagination for the previous page
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // this is basic the set of the current page number
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  /**
+   * 
+   * @returns Function to build pagination info text, so every time the user will change the page, it will be updated.
+   */
+  const getPaginationInfo = (): string => {
+    const start = startIndex + 1;
+    const end = Math.min(endIndex, EmployeeWithequiredAge.length);
+    const total = EmployeeWithequiredAge.length;
+    return `Showing ${start} to ${end} of ${total} employees`;
+  };
+
   /**
    * LoadServerData is an asynchronous function that fetches employee data from a remote API.
    * It uses axios to make a GET request to the specified API URL.
@@ -32,6 +72,7 @@ function App() {
     if (responseData != null && responseData.data != null && responseData.data.employees != null){
       employeesData = responseData.data.employees;
       setEmployeeWithequiredAge(employeesData.filter( person => person.age > 30))
+      setCurrentPage(1); // Reset to first page when new data is loaded
     }
     
   };
@@ -41,6 +82,8 @@ function App() {
     LoadServerData(); 
   }, []);
 
+  
+
   return (
     <>
     <div id="content">
@@ -48,24 +91,48 @@ function App() {
       {
         EmployeeWithequiredAge.length > 0 ? 
         (
-          <table>
-            <thead>
-              <th>Name</th>
-              <th>Salary</th>
-              <th>Age</th>
-            </thead>
-            <tbody>
-                { EmployeeWithequiredAge.map((emp : Employee) => (
+          <>
+            <table>
+              <thead>
                 <tr>
-                  <td>{emp.employee_name}</td>
-                  <td>{emp.salary}</td>
-                  <td>{emp.age}</td>
+                  <th>Name</th>
+                  <th>Salary</th>
+                  <th>Age</th>
                 </tr>
+              </thead>
+              <tbody>
+                  { currentEmployees.map((emp : Employee) => (
+                  <tr key={emp.id}>
+                    <td>{emp.employee_name}</td>
+                    <td>{emp.salary}</td>
+                    <td>{emp.age}</td>
+                  </tr>
+                  ))}
+              </tbody>
+            </table>
+            
+            <div className="pagination-controls">
+
+              <div className="pagination-info">
+                {getPaginationInfo()}
+              </div>
+              
+              <div className="pagination-buttons">
+                <button  onClick={goToPrevPage}  disabled={currentPage === 1} className="pagination-btn">Previous</button>
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button key={page} onClick={() => goToPage(page)} className={`pagination-btn ${currentPage === page ? 'active' : ''}`} >
+                    {page}
+                  </button>
                 ))}
-            </tbody>
-      </table>
+                
+                <button  onClick={goToNextPage}  disabled={currentPage === totalPages} className="pagination-btn">Next</button>
+
+              </div>
+            </div>
+          </>
         ) : (   
-          <p>Things are loading...</p>
+          <p>Table are loading...</p>
         )
       }
       </div>
