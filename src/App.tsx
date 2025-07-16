@@ -104,7 +104,7 @@ function App() {
                   { currentEmployees.map((emp : Employee) => (
                   <tr key={emp.id}>
                     <td>{emp.employee_name}</td>
-                    <td>${emp.salary.toLocaleString()}</td>
+                    <td>{"$" + emp.salary.toLocaleString()}</td>
                     <td>{emp.age}</td>
                   </tr>
                   ))}
