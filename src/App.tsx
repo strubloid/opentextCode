@@ -82,8 +82,6 @@ function App() {
     LoadServerData(); 
   }, []);
 
-  
-
   return (
     <>
     <div id="content">
