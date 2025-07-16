@@ -92,47 +92,72 @@ function App() {
         EmployeeWithequiredAge.length > 0 ? 
         (
           <>
-            <table>
+            <table role="table" aria-label="Employees over 30 years old">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Salary</th>
-                  <th>Age</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Salary</th>
+                  <th scope="col">Age</th>
                 </tr>
               </thead>
               <tbody>
                   { currentEmployees.map((emp : Employee) => (
                   <tr key={emp.id}>
                     <td>{emp.employee_name}</td>
-                    <td>{emp.salary}</td>
+                    <td>${emp.salary.toLocaleString()}</td>
                     <td>{emp.age}</td>
                   </tr>
                   ))}
               </tbody>
             </table>
             
-            <div className="pagination-controls">
+            <nav className="pagination-controls" aria-label="Pagination Navigation" role="navigation">
 
-              <div className="pagination-info">
+              <div className="pagination-info" aria-live="polite" aria-atomic="true">
                 {getPaginationInfo()}
               </div>
               
-              <div className="pagination-buttons">
-                <button  onClick={goToPrevPage}  disabled={currentPage === 1} className="pagination-btn">Previous</button>
+              <div className="pagination-buttons" role="group" aria-label="Pagination buttons">
+                <button  
+                  onClick={goToPrevPage}  
+                  disabled={currentPage === 1} 
+                  className="pagination-btn"
+                  aria-label="Go to previous page"
+                  title="Go to previous page"
+                >
+                  Previous
+                </button>
                 
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button key={page} onClick={() => goToPage(page)} className={`pagination-btn ${currentPage === page ? 'active' : ''}`} >
+                  <button 
+                    key={page} 
+                    onClick={() => goToPage(page)} 
+                    className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                    aria-label={`Go to page ${page}`}
+                    aria-current={currentPage === page ? 'page' : undefined}
+                    title={`Go to page ${page}`}
+                  >
                     {page}
                   </button>
                 ))}
                 
-                <button  onClick={goToNextPage}  disabled={currentPage === totalPages} className="pagination-btn">Next</button>
+                <button  
+                  onClick={goToNextPage}  
+                  disabled={currentPage === totalPages} 
+                  className="pagination-btn"
+                  aria-label="Go to next page"
+                  title="Go to next page"
+                >
+                  Next
+                </button>
 
               </div>
-            </div>
+            </nav>
           </>
         ) : (   
-          <p>Table are loading...</p>
+          <div role="status" aria-live="polite" aria-label="Loading employees data">
+            <p>Table are loading...</p>
+          </div>
         )
       }
       </div>

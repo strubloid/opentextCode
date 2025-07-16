@@ -106,3 +106,31 @@ tr:hover {
 .pagination-btn.active:hover {
   background-color: #4a6fa5;
 }
+
+/* Accessibility improvements */
+.pagination-btn:focus {
+  outline: 2px solid #5780b3;
+  outline-offset: 2px;
+}
+
+.pagination-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.pagination-btn:focus-visible {
+  outline: 2px solid #5780b3;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pagination-btn {
+    border: 2px solid;
+  }
+  
+  .pagination-btn.active {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+  }
+}
